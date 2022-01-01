@@ -1,4 +1,4 @@
-const CONTRACT_ADDRESS = '0xE36ea9ad78762115b73A2381B94ea60104b0cE21';
+const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS;
 
 const transformCharacterData = (characterData) => {
 	return {

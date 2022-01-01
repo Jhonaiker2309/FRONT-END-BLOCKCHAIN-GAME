@@ -3,6 +3,7 @@ import "./SelectCharacter.css";
 import { ethers } from "ethers";
 import { CONTRACT_ADDRESS, transformCharacterData } from "../../constants";
 import myEpicGame from "../../utils/myEpicGame.json";
+import LoadingIndicator from "../LoadingIndicator";
 import "./SelectCharacter.css";
 
 /*
@@ -112,22 +113,24 @@ useEffect(() => {
 	};
 }, [gameContract]);
 
-        const renderCharacters = () => characters.map((character, index) => (
-           
+        const renderCharacters = () =>
+					characters.map((character, index) => (
 						<div className="character-item" key={character.name}>
 							<div className="name-container">
 								<p>{character.name}</p>
 							</div>
-							<img src={character.imageURI} alt={character.name} />
+							<img
+								src={`https://cloudflare-ipfs.com/ipfs/${character.imageURI}`}
+								alt={character.name}
+							/>
 							<button
 								type="button"
 								className="character-mint-button"
-                                onClick={mintCharacterNFTAction(index)}
-								>{`Mint ${character.name}`}</button>
-                                
+								onClick={mintCharacterNFTAction(
+									index,
+								)}>{`Mint ${character.name}`}</button>
 						</div>
-          )            
-        );
+					));
 
         useEffect(() => {
 					const getCharacters = async () => {
@@ -170,24 +173,20 @@ useEffect(() => {
 	return (
 		<div className="select-character-container">
 			<h2>Mint Your Hero. Choose wisely.</h2>
-			{/* Only show this when there are characters in state */}
 			{characters.length > 0 && (
-                
-				<div className="character-grid">
-					{characters.map((character, index) => (
-						<div className="character-item" key={character.name}>
-							<div className="name-container">
-								<p>{character.name}</p>
-							</div>
-							<img src={character.imageURI} alt={character.name} />
-							<button
-								type="button"
-								className="character-mint-button"
-								onClick={mintCharacterNFTAction(
-									index,
-								)}>{`Mint ${character.name}`}</button>
-						</div>
-					))}
+				<div className="character-grid">{renderCharacters()}</div>
+			)}
+			{/* Only show our loading state if mintingCharacter is true */}
+			{mintingCharacter && (
+				<div className="loading">
+					<div className="indicator">
+						<LoadingIndicator />
+						<p>Minting In Progress...</p>
+					</div>
+					<img
+						src="https://media2.giphy.com/media/61tYloUgq1eOk/giphy.gif?cid=ecf05e47dg95zbpabxhmhaksvoy8h526f96k4em0ndvx078s&rid=giphy.gif&ct=g"
+						alt="Minting loading indicator"
+					/>
 				</div>
 			)}
 		</div>

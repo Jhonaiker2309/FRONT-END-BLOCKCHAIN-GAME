@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { CONTRACT_ADDRESS, transformCharacterData } from "../../constants";
 import myEpicGame from "../../utils/myEpicGame.json";
+import LoadingIndicator from "../LoadingIndicator"
 import "./Arena.css";
 
 /*
@@ -12,8 +13,6 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
 	const [gameContract, setGameContract] = useState(null);
 
     const [boss, setBoss] = useState(null);
-
-    const [isLoading, setIsLoading] = useState(false);
 
 
 
@@ -109,7 +108,10 @@ return (
 				<div className={`boss-content ${attackState}`}>
 					<h2>🔥 {boss.name} 🔥</h2>
 					<div className="image-content">
-						<img src={boss.imageURI} alt={`Boss ${boss.name}`} />
+						<img
+							src={`https://cloudflare-ipfs.com/ipfs/${boss.imageURI}`}
+							alt={`Boss ${boss.name}`}
+						/>
 						<div className="health-bar">
 							<progress value={boss.hp} max={boss.maxHp} />
 							<p>{`${boss.hp} / ${boss.maxHp} HP`}</p>
@@ -121,6 +123,12 @@ return (
 						{`💥 Attack ${boss.name}`}
 					</button>
 				</div>
+				{attackState === "attacking" && (
+					<div className="loading-indicator">
+						<LoadingIndicator />
+						<p>Attacking ⚔️</p>
+					</div>
+				)}
 			</div>
 		)}
 
@@ -133,7 +141,7 @@ return (
 						<div className="image-content">
 							<h2>{characterNFT.name}</h2>
 							<img
-								src={characterNFT.imageURI}
+								src={`https://cloudflare-ipfs.com/ipfs/${characterNFT.imageURI}`}
 								alt={`Character ${characterNFT.name}`}
 							/>
 							<div className="health-bar">
